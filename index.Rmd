@@ -25,9 +25,10 @@ knit        : slidify::knit2slides
 
 ## Problems
 
+1. Acquisition, cleaning, reporting all need separate tools
 1. Data and analysis live together in the same file
-2. Updating data is hard
-3. Describing what you did to someone else is nearly impossible
+1. Updating data is hard
+1. Describing what you did to someone else is nearly impossible
 
 ---
 
@@ -40,7 +41,7 @@ knit        : slidify::knit2slides
 
 ---
 
-## Download R
+## Getting R
 
 R - https://cran.r-project.org/
 
@@ -48,18 +49,156 @@ RStudio - https://www.rstudio.com/products/rstudio/download/
 
 ---
 
-## Getting data from a database or website
+## Basics
 
+* Use the <- operator to assign
+* Don't use ; at the end of lines
+* You don't have to declare a specific type
 
+```{r}
+x <- 1
+x
+class(x)
+
+y <- c(2, "red", 4)
+y
+class(y)
+```
 
 ---
 
-## Cleaning data
+## Basics: If
+
+```{r}
+x <- 5
+
+if (x > 3) {
+    y <- 10
+} else {
+    y <- 0
+}
+print(y)
+```
 
 ---
 
-## Making charts and graphs
+## Basics: For
 
+```{r}
+for (i in 1:10) {
+    print(i)
+}
+```
+
+---
+
+## Basics: Data Frames
+
+```{r}
+d <- c(1,2,3,4)
+e <- c("red", "white", "red", NA)
+f <- c(TRUE,TRUE,TRUE,FALSE)
+mydata <- data.frame(d,e,f)
+names(mydata) <- c("ID","Color","Passed") # variable names
+print(mydata)
+```
+
+http://www.statmethods.net/input/datatypes.html
+
+---
+
+## Basics: Factors
+
+```{r}
+# variable gender with 20 "male" entries and 30 "female" entries 
+gender <- c(rep("male",20), rep("female", 30)) 
+gender <- factor(gender) 
+# stores gender as 20 1s and 30 2s and associates
+# 1=female, 2=male internally (alphabetically)
+summary(gender)
+str(gender)
+```
+
+http://www.statmethods.net/input/datatypes.html
+
+---
+
+## 1. Getting data from a database or website
+
+```{r}
+fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl,destfile="./data/cameras.csv")
+list.files("./data")
+dateDownloaded <- date()
+dateDownloaded
+```
+
+https://github.com/rdpeng/courses/tree/master/03_GettingData
+
+---
+
+## 1. Getting data from a database or website
+
+```{r}
+cameraData <- read.table("./data/cameras.csv",sep=",",header=TRUE)
+head(cameraData)
+```
+
+---
+
+## 2. Cleaning Data
+
+```{r}
+fileUrl <- "http://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl,destfile="./data/restaurants.csv")
+restData <- read.csv("./data/restaurants.csv")
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+---
+
+## 2. Cleaning Data
+
+Summarizing data
+
+```{r}
+str(restData)
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+---
+
+## 2. Cleaning Data
+
+Finding missing values
+
+```{r}
+sum(is.na(restData$councilDistrict))
+all(restData$zipCode > 0)
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+---
+
+## 2. Cleaning Data
+
+Finding specific values
+
+```{r}
+table(restData$zipCode %in% c("21212"))
+table(restData$zipCode %in% c("21212","21213"))
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+---
+
+## 3. Making charts and graphs
+
+```{r}
+
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
 ---
 
 ## Interacting with data

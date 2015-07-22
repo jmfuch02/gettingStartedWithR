@@ -15,20 +15,20 @@ knit        : slidify::knit2slides
 
 "Solve this problem... Answer this question..."
 
-1. Load the data
-2. Clean it
-3. Graph it
-4. Change something
-5. Send it to 'production'
+- Load the data
+- Clean it
+- Graph it
+- Change something
+- Send it to 'production'
 
----
+--- .class1
 
 ## Problems
 
-* Acquisition, cleaning, reporting all need separate tools
-* Data and analysis live together in the same file
-* Updating data is hard
-* Describing what you did to someone else is nearly impossible
+> - Acquisition, cleaning, reporting all need separate tools
+> - Data and analysis live together in the same file
+> - Updating data is hard
+> - Describing what you did to someone else is nearly impossible
 
 ---
 
@@ -165,7 +165,7 @@ download.file(fileUrl,destfile="./data/restaurants.csv")
 restData <- read.csv("./data/restaurants.csv")
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
@@ -177,7 +177,7 @@ Summarizing data
 str(restData)
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
@@ -190,7 +190,7 @@ sum(is.na(restData$councilDistrict))
 all(restData$zipCode > 0)
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
@@ -203,11 +203,13 @@ table(restData$zipCode %in% c("21212"))
 table(restData$zipCode %in% c("21212","21213"))
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
 ## 3. Making charts and graphs
+
+Loading `ggplot2`
 
 ```{r, eval=FALSE}
 install.packages("ggplot2")
@@ -223,11 +225,13 @@ http://docs.ggplot2.org/current/
 
 ## 3. Making charts and graphs
 
+Example dataset `mpg`
+
 ```{r, warning=FALSE, error=FALSE, message=FALSE}
 str(mpg)
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -237,7 +241,7 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(displ, hwy, data = mpg)
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -247,7 +251,7 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(displ, hwy, data = mpg, color = drv)
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -257,7 +261,7 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -267,7 +271,7 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(hwy, data = mpg, fill = drv)
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -277,7 +281,7 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(displ, hwy, data = mpg, facets = . ~ drv)
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -287,7 +291,7 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(hwy, data = mpg, facets = drv ~ ., binwidth = 2)
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -301,6 +305,28 @@ manipulate(plot(1:x), x = slider(1, 100))
 ```
 
 [Documentation](https://support.rstudio.com/hc/en-us/articles/200551906-Interactive-Plotting-with-Manipulate)
+
+---
+
+## 4. Interacting with data
+
+Another example
+
+```{r, eval=FALSE}
+library(manipulate)
+library(HistData)
+data(Galton)
+myHist <- function(mu){
+    hist(Galton$child,col="blue",breaks=100)
+    lines(c(mu, mu), c(0, 150),col="red",lwd=5)
+    mse <- mean((Galton$child - mu)^2)
+    text(63, 150, paste("mu = ", mu))
+    text(63, 140, paste("MSE = ", round(mse, 2)))
+}
+manipulate(myHist(mu), mu = slider(62, 74, step = 0.5))
+```
+
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/09_DevelopingDataProducts/manipulate/index.Rmd)
 
 ---
 
@@ -322,39 +348,5 @@ http://rmarkdown.rstudio.com/
 [Course Material](https://github.com/rdpeng/courses)
 
 [Shiny Gallery](http://shiny.rstudio.com/gallery/)
-
----
-
-
-## Junk
-
-<img src="assets/img/Genscape_logo_grey.png" height=100> _Genscape_
-
-![anything](assets/img/Genscape_logo_grey.png) _Genscape_
-
----
-
-## Basics: If
-
-```{r}
-x <- 5
-
-if (x > 3) {
-    y <- 10
-} else {
-    y <- 0
-}
-print(y)
-```
-
----
-
-## Basics: For
-
-```{r}
-for (i in 1:10) {
-    print(i)
-}
-```
 
 ---

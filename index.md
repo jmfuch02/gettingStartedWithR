@@ -25,10 +25,10 @@ knit        : slidify::knit2slides
 
 ## Problems
 
-1. Acquisition, cleaning, reporting all need separate tools
-1. Data and analysis live together in the same file
-1. Updating data is hard
-1. Describing what you did to someone else is nearly impossible
+* Acquisition, cleaning, reporting all need separate tools
+* Data and analysis live together in the same file
+* Updating data is hard
+* Describing what you did to someone else is nearly impossible
 
 ---
 
@@ -53,6 +53,7 @@ RStudio - https://www.rstudio.com/products/rstudio/download/
 
 * Use the <- operator to assign
 * Don't use ; at the end of lines
+* You don't have to declare a specific type
 
 
 ```r
@@ -65,56 +66,12 @@ x
 ```
 
 ```r
-y <- c(2, 3, 4)
+y <- c(2, "red", 4)
 y
 ```
 
 ```
-## [1] 2 3 4
-```
-
----
-
-## Basics: If
-
-
-```r
-x <- 5
-
-if (x > 3) {
-    y <- 10
-} else {
-    y <- 0
-}
-print(y)
-```
-
-```
-## [1] 10
-```
-
----
-
-## Basics: For
-
-
-```r
-for (i in 1:10) {
-    print(i)
-}
-```
-
-```
-## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10
+## [1] "2"   "red" "4"
 ```
 
 ---
@@ -144,6 +101,32 @@ http://www.statmethods.net/input/datatypes.html
 ---
 
 ## Basics: Data Frames
+
+
+```r
+print(mydata)
+```
+
+```
+##   ID Color Passed
+## 1  1   red   TRUE
+## 2  2 white   TRUE
+## 3  3   red   TRUE
+## 4  4  <NA>  FALSE
+```
+
+```r
+mydata[3,2]
+```
+
+```
+## [1] red
+## Levels: red white
+```
+
+---
+
+## Basics: Factors
 
 
 ```r
@@ -191,7 +174,7 @@ dateDownloaded
 ```
 
 ```
-## [1] "Tue Jul 21 15:09:11 2015"
+## [1] "Wed Jul 22 08:40:53 2015"
 ```
 
 https://github.com/rdpeng/courses/tree/master/03_GettingData
@@ -225,6 +208,36 @@ head(cameraData)
 
 ---
 
+## 1. Getting data from a database or website
+
+Database connections  
+  
+[PostgreSQL - "RPostgreSQL"](https://cran.r-project.org/web/packages/RPostgreSQL/index.html)
+
+[Oracle - "ROracle"](https://cran.r-project.org/web/packages/ROracle/index.html)
+
+[MySQL - "RMySQL"](https://cran.r-project.org/web/packages/RMySQL/index.html)
+
+---
+
+## 1. Getting data from a database or website
+
+PostgreSQL example
+  
+
+```r
+drv <- dbDriver("PostgreSQL")                       # Load driver
+con <- dbConnect(drv, dbname="tempdb")              # Connect
+rs <- dbSendQuery(con,"select * from TableName")    # Run a query
+fetch(rs,n=-1)                                      # Return all elements
+dbDisconnect(con)                                   # Disconnect
+dbUnloadDriver(drv)                                 # Unload driver
+```
+
+https://code.google.com/p/rpostgresql/
+
+---
+
 ## 2. Cleaning Data
 
 
@@ -233,6 +246,8 @@ fileUrl <- "http://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accessTyp
 download.file(fileUrl,destfile="./data/restaurants.csv")
 restData <- read.csv("./data/restaurants.csv")
 ```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
 
 ---
 
@@ -255,6 +270,8 @@ str(restData)
 ##  $ Location.1     : Factor w/ 1210 levels "1 BIDDLE ST\nBaltimore, MD\n",..: 835 334 554 755 492 537 505 530 507 569 ...
 ```
 
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+
 ---
 
 ## 2. Cleaning Data
@@ -262,25 +279,259 @@ str(restData)
 Finding missing values
 
 
+```r
+sum(is.na(restData$councilDistrict))
+```
+
+```
+## [1] 0
+```
+
+```r
+all(restData$zipCode > 0)
+```
+
+```
+## [1] FALSE
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
 
 ---
 
-## Making charts and graphs
+## 2. Cleaning Data
+
+Finding specific values
+
+
+```r
+table(restData$zipCode %in% c("21212"))
+```
+
+```
+## 
+## FALSE  TRUE 
+##  1299    28
+```
+
+```r
+table(restData$zipCode %in% c("21212","21213"))
+```
+
+```
+## 
+## FALSE  TRUE 
+##  1268    59
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
 
 ---
 
-## Interacting with data
+## 3. Making charts and graphs
+
+
+```r
+install.packages("ggplot2")
+```
+
+
+```r
+library(ggplot2)
+```
+
+http://docs.ggplot2.org/current/
 
 ---
 
-## Creating presentations and reports
+## 3. Making charts and graphs
+
+
+```r
+str(mpg)
+```
+
+```
+## 'data.frame':	234 obs. of  11 variables:
+##  $ manufacturer: Factor w/ 15 levels "audi","chevrolet",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ model       : Factor w/ 38 levels "4runner 4wd",..: 2 2 2 2 2 2 2 3 3 3 ...
+##  $ displ       : num  1.8 1.8 2 2 2.8 2.8 3.1 1.8 1.8 2 ...
+##  $ year        : int  1999 1999 2008 2008 1999 1999 2008 1999 1999 2008 ...
+##  $ cyl         : int  4 4 4 4 6 6 6 4 4 4 ...
+##  $ trans       : Factor w/ 10 levels "auto(av)","auto(l3)",..: 4 9 10 1 4 9 1 9 4 10 ...
+##  $ drv         : Factor w/ 3 levels "4","f","r": 2 2 2 2 2 2 2 1 1 1 ...
+##  $ cty         : int  18 21 20 21 16 18 18 18 16 20 ...
+##  $ hwy         : int  29 29 31 30 26 26 27 26 25 28 ...
+##  $ fl          : Factor w/ 5 levels "c","d","e","p",..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ class       : Factor w/ 7 levels "2seater","compact",..: 2 2 2 2 2 2 2 2 2 2 ...
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
 
 ---
+
+## 3. Making charts and graphs
+
+
+```r
+qplot(displ, hwy, data = mpg)
+```
+
+![plot of chunk unnamed-chunk-15](assets/fig/unnamed-chunk-15-1.png) 
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+
+```r
+qplot(displ, hwy, data = mpg, color = drv)
+```
+
+![plot of chunk unnamed-chunk-16](assets/fig/unnamed-chunk-16-1.png) 
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+
+```r
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
+```
+
+![plot of chunk unnamed-chunk-17](assets/fig/unnamed-chunk-17-1.png) 
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+
+```r
+qplot(hwy, data = mpg, fill = drv)
+```
+
+![plot of chunk unnamed-chunk-18](assets/fig/unnamed-chunk-18-1.png) 
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+
+```r
+qplot(displ, hwy, data = mpg, facets = . ~ drv)
+```
+
+![plot of chunk unnamed-chunk-19](assets/fig/unnamed-chunk-19-1.png) 
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+
+```r
+qplot(hwy, data = mpg, facets = drv ~ ., binwidth = 2)
+```
+
+![plot of chunk unnamed-chunk-20](assets/fig/unnamed-chunk-20-1.png) 
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 4. Interacting with data
+
+`manipulate` function
+
+
+```r
+library(manipulate)
+manipulate(plot(1:x), x = slider(1, 100))
+```
+
+[Documentation](https://support.rstudio.com/hc/en-us/articles/200551906-Interactive-Plotting-with-Manipulate)
+
+---
+
+## 5. Creating presentations and reports
+
+* Presentations: You're looking at one
+* Reports
+
+http://rmarkdown.rstudio.com/
+
+---
+
+## Resources
+
+[Swirl](http://swirlstats.com/)
+
+[Coursera Data Science - Johns Hopkins](https://www.coursera.org/specialization/jhudatascience/1)
+
+[Course Material](https://github.com/rdpeng/courses)
+
+[Shiny Gallery](http://shiny.rstudio.com/gallery/)
+
+---
+
 
 ## Junk
 
 <img src="assets/img/Genscape_logo_grey.png" height=100> _Genscape_
 
 ![anything](assets/img/Genscape_logo_grey.png) _Genscape_
+
+---
+
+## Basics: If
+
+
+```r
+x <- 5
+
+if (x > 3) {
+    y <- 10
+} else {
+    y <- 0
+}
+print(y)
+```
+
+```
+## [1] 10
+```
+
+---
+
+## Basics: For
+
+
+```r
+for (i in 1:10) {
+    print(i)
+}
+```
+
+```
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5
+## [1] 6
+## [1] 7
+## [1] 8
+## [1] 9
+## [1] 10
+```
 
 ---

@@ -51,17 +51,28 @@ RStudio - https://www.rstudio.com/products/rstudio/download/
 
 ## Basics
 
-* Use the <- operator to assign
-* Don't use ; at the end of lines
+* Use the `<-` operator to assign
+* You don't have to use `;` at the end of lines, unless combining commands
 * You don't have to declare a specific type
+* Object-oriented people: don't let the `.` trick you
 
 ```{r}
 x <- 1
 x
 
-y <- c(2, "red", 4)
-y
+y <- c(2, "red", 4); print(y)
 ```
+
+---
+
+## 1. Getting data from a database or website
+
+```{r}
+fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl,destfile="./data/cameras.csv")
+```
+
+[Source: JHU-DS](https://github.com/rdpeng/courses/tree/master/03_GettingData)
 
 ---
 
@@ -89,42 +100,14 @@ mydata[3,2]
 
 ---
 
-## Basics: Factors
-
-```{r}
-# variable gender with 20 "male" entries and 30 "female" entries 
-gender <- c(rep("male",20), rep("female", 30)) 
-gender <- factor(gender) 
-# stores gender as 20 1s and 30 2s and associates
-# 1=female, 2=male internally (alphabetically)
-summary(gender)
-str(gender)
-```
-
-http://www.statmethods.net/input/datatypes.html
-
----
-
-## 1. Getting data from a database or website
-
-```{r}
-fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
-download.file(fileUrl,destfile="./data/cameras.csv")
-list.files("./data")
-dateDownloaded <- date()
-dateDownloaded
-```
-
-https://github.com/rdpeng/courses/tree/master/03_GettingData
-
----
-
 ## 1. Getting data from a database or website
 
 ```{r}
 cameraData <- read.table("./data/cameras.csv",sep=",",header=TRUE)
 head(cameraData)
 ```
+
+[Source: JHU-DS](https://github.com/rdpeng/courses/tree/master/03_GettingData)
 
 ---
 
@@ -169,6 +152,22 @@ restData <- read.csv("./data/restaurants.csv")
 
 ---
 
+## Basics: Factors
+
+```{r}
+# variable gender with 20 "male" entries and 30 "female" entries 
+gender <- c(rep("male",20), rep("female", 30)) 
+gender <- factor(gender) 
+# stores gender as 20 1s and 30 2s and associates
+# 1=female, 2=male internally (alphabetically)
+summary(gender)
+str(gender)
+```
+
+http://www.statmethods.net/input/datatypes.html
+
+---
+
 ## 2. Cleaning Data
 
 Summarizing data
@@ -183,7 +182,7 @@ str(restData)
 
 ## 2. Cleaning Data
 
-Finding missing values
+Finding missing values with `is.na`
 
 ```{r}
 sum(is.na(restData$councilDistrict))

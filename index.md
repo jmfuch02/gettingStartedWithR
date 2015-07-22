@@ -52,8 +52,9 @@ RStudio - https://www.rstudio.com/products/rstudio/download/
 ## Basics
 
 * Use the <- operator to assign
-* Don't use ; at the end of lines
+* You don't have to use `;` at the end of lines, unless combining commands
 * You don't have to declare a specific type
+* Object-oriented people: don't let the `.` trick you
 
 
 ```r
@@ -66,13 +67,55 @@ x
 ```
 
 ```r
-y <- c(2, "red", 4)
-y
+y <- c(2, "red", 4); print(y)
 ```
 
 ```
 ## [1] "2"   "red" "4"
 ```
+
+---
+
+
+
+## Basics: Factors
+
+
+```r
+# variable gender with 20 "male" entries and 30 "female" entries 
+gender <- c(rep("male",20), rep("female", 30)) 
+gender <- factor(gender) 
+# stores gender as 20 1s and 30 2s and associates
+# 1=female, 2=male internally (alphabetically)
+summary(gender)
+```
+
+```
+## female   male 
+##     30     20
+```
+
+```r
+str(gender)
+```
+
+```
+##  Factor w/ 2 levels "female","male": 2 2 2 2 2 2 2 2 2 2 ...
+```
+
+http://www.statmethods.net/input/datatypes.html
+
+---
+
+## 1. Getting data from a database or website
+
+
+```r
+fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl,destfile="./data/cameras.csv")
+```
+
+[Source: JHU-DS](https://github.com/rdpeng/courses/tree/master/03_GettingData)
 
 ---
 
@@ -126,61 +169,6 @@ mydata[3,2]
 
 ---
 
-## Basics: Factors
-
-
-```r
-# variable gender with 20 "male" entries and 30 "female" entries 
-gender <- c(rep("male",20), rep("female", 30)) 
-gender <- factor(gender) 
-# stores gender as 20 1s and 30 2s and associates
-# 1=female, 2=male internally (alphabetically)
-summary(gender)
-```
-
-```
-## female   male 
-##     30     20
-```
-
-```r
-str(gender)
-```
-
-```
-##  Factor w/ 2 levels "female","male": 2 2 2 2 2 2 2 2 2 2 ...
-```
-
-http://www.statmethods.net/input/datatypes.html
-
----
-
-## 1. Getting data from a database or website
-
-
-```r
-fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
-download.file(fileUrl,destfile="./data/cameras.csv")
-list.files("./data")
-```
-
-```
-## [1] "cameras.csv"     "restaurants.csv"
-```
-
-```r
-dateDownloaded <- date()
-dateDownloaded
-```
-
-```
-## [1] "Wed Jul 22 08:40:53 2015"
-```
-
-https://github.com/rdpeng/courses/tree/master/03_GettingData
-
----
-
 ## 1. Getting data from a database or website
 
 
@@ -205,6 +193,8 @@ head(cameraData)
 ## 5      E 33rd  & The Alameda (39.3283410623, -76.5953594625)
 ## 6         Erdman  & Macon St (39.3068045671, -76.5593167803)
 ```
+
+[Source: JHU-DS](https://github.com/rdpeng/courses/tree/master/03_GettingData)
 
 ---
 

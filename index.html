@@ -112,8 +112,9 @@
   <article data-timings="">
     <ul>
 <li>Use the &lt;- operator to assign</li>
-<li>Don&#39;t use ; at the end of lines</li>
+<li>You don&#39;t have to use <code>;</code> at the end of lines, unless combining commands</li>
 <li>You don&#39;t have to declare a specific type</li>
+<li>Object-oriented people: don&#39;t let the <code>.</code> trick you</li>
 </ul>
 
 <pre><code class="r">x &lt;- 1
@@ -123,8 +124,7 @@ x
 <pre><code>## [1] 1
 </code></pre>
 
-<pre><code class="r">y &lt;- c(2, &quot;red&quot;, 4)
-y
+<pre><code class="r">y &lt;- c(2, &quot;red&quot;, 4); print(y)
 </code></pre>
 
 <pre><code>## [1] &quot;2&quot;   &quot;red&quot; &quot;4&quot;
@@ -135,58 +135,6 @@ y
 </slide>
 
 <slide class="" id="slide-6" style="background:;">
-  <hgroup>
-    <h2>Basics: Data Frames</h2>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">d &lt;- c(1,2,3,4)
-e &lt;- c(&quot;red&quot;, &quot;white&quot;, &quot;red&quot;, NA)
-f &lt;- c(TRUE,TRUE,TRUE,FALSE)
-mydata &lt;- data.frame(d,e,f)
-names(mydata) &lt;- c(&quot;ID&quot;,&quot;Color&quot;,&quot;Passed&quot;) # variable names
-print(mydata)
-</code></pre>
-
-<pre><code>##   ID Color Passed
-## 1  1   red   TRUE
-## 2  2 white   TRUE
-## 3  3   red   TRUE
-## 4  4  &lt;NA&gt;  FALSE
-</code></pre>
-
-<p><a href="http://www.statmethods.net/input/datatypes.html">http://www.statmethods.net/input/datatypes.html</a></p>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-7" style="background:;">
-  <hgroup>
-    <h2>Basics: Data Frames</h2>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">print(mydata)
-</code></pre>
-
-<pre><code>##   ID Color Passed
-## 1  1   red   TRUE
-## 2  2 white   TRUE
-## 3  3   red   TRUE
-## 4  4  &lt;NA&gt;  FALSE
-</code></pre>
-
-<pre><code class="r">mydata[3,2]
-</code></pre>
-
-<pre><code>## [1] red
-## Levels: red white
-</code></pre>
-
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="" id="slide-8" style="background:;">
   <hgroup>
     <h2>Basics: Factors</h2>
   </hgroup>
@@ -215,27 +163,68 @@ summary(gender)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-9" style="background:;">
+<slide class="" id="slide-7" style="background:;">
   <hgroup>
     <h2>1. Getting data from a database or website</h2>
   </hgroup>
   <article data-timings="">
     <pre><code class="r">fileUrl &lt;- &quot;http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD&quot;
 download.file(fileUrl,destfile=&quot;./data/cameras.csv&quot;)
-list.files(&quot;./data&quot;)
 </code></pre>
 
-<pre><code>## [1] &quot;cameras.csv&quot;     &quot;restaurants.csv&quot;
+<p><a href="https://github.com/rdpeng/courses/tree/master/03_GettingData">Source: JHU-DS</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Basics: Data Frames</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">d &lt;- c(1,2,3,4)
+e &lt;- c(&quot;red&quot;, &quot;white&quot;, &quot;red&quot;, NA)
+f &lt;- c(TRUE,TRUE,TRUE,FALSE)
+mydata &lt;- data.frame(d,e,f)
+names(mydata) &lt;- c(&quot;ID&quot;,&quot;Color&quot;,&quot;Passed&quot;) # variable names
+print(mydata)
 </code></pre>
 
-<pre><code class="r">dateDownloaded &lt;- date()
-dateDownloaded
+<pre><code>##   ID Color Passed
+## 1  1   red   TRUE
+## 2  2 white   TRUE
+## 3  3   red   TRUE
+## 4  4  &lt;NA&gt;  FALSE
 </code></pre>
 
-<pre><code>## [1] &quot;Wed Jul 22 08:40:53 2015&quot;
+<p><a href="http://www.statmethods.net/input/datatypes.html">http://www.statmethods.net/input/datatypes.html</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Basics: Data Frames</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">print(mydata)
 </code></pre>
 
-<p><a href="https://github.com/rdpeng/courses/tree/master/03_GettingData">https://github.com/rdpeng/courses/tree/master/03_GettingData</a></p>
+<pre><code>##   ID Color Passed
+## 1  1   red   TRUE
+## 2  2 white   TRUE
+## 3  3   red   TRUE
+## 4  4  &lt;NA&gt;  FALSE
+</code></pre>
+
+<pre><code class="r">mydata[3,2]
+</code></pre>
+
+<pre><code>## [1] red
+## Levels: red white
+</code></pre>
 
   </article>
   <!-- Presenter Notes -->
@@ -265,6 +254,8 @@ head(cameraData)
 ## 5      E 33rd  &amp; The Alameda (39.3283410623, -76.5953594625)
 ## 6         Erdman  &amp; Macon St (39.3068045671, -76.5593167803)
 </code></pre>
+
+<p><a href="https://github.com/rdpeng/courses/tree/master/03_GettingData">Source: JHU-DS</a></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -667,25 +658,25 @@ manipulate(myHist(mu), mu = slider(62, 74, step = 0.5))
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Basics: Data Frames'>
+        data-slide=6 title='Basics: Factors'>
          6
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='Basics: Data Frames'>
+        data-slide=7 title='1. Getting data from a database or website'>
          7
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=8 title='Basics: Factors'>
+        data-slide=8 title='Basics: Data Frames'>
          8
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=9 title='1. Getting data from a database or website'>
+        data-slide=9 title='Basics: Data Frames'>
          9
       </a>
     </li>

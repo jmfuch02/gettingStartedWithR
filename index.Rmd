@@ -25,9 +25,10 @@ knit        : slidify::knit2slides
 
 ## Problems
 
-1. Data and analysis live together in the same file
-2. Updating data is hard
-3. Describing what you did to someone else is nearly impossible
+* Acquisition, cleaning, reporting all need separate tools
+* Data and analysis live together in the same file
+* Updating data is hard
+* Describing what you did to someone else is nearly impossible
 
 ---
 
@@ -40,7 +41,7 @@ knit        : slidify::knit2slides
 
 ---
 
-## Download R
+## Getting R
 
 R - https://cran.r-project.org/
 
@@ -48,32 +49,312 @@ RStudio - https://www.rstudio.com/products/rstudio/download/
 
 ---
 
-## Getting data from a database or website
+## Basics
 
+* Use the <- operator to assign
+* Don't use ; at the end of lines
+* You don't have to declare a specific type
 
+```{r}
+x <- 1
+x
 
----
-
-## Cleaning data
-
----
-
-## Making charts and graphs
-
----
-
-## Interacting with data
+y <- c(2, "red", 4)
+y
+```
 
 ---
 
-## Creating presentations and reports
+## Basics: Data Frames
+
+```{r}
+d <- c(1,2,3,4)
+e <- c("red", "white", "red", NA)
+f <- c(TRUE,TRUE,TRUE,FALSE)
+mydata <- data.frame(d,e,f)
+names(mydata) <- c("ID","Color","Passed") # variable names
+print(mydata)
+```
+
+http://www.statmethods.net/input/datatypes.html
 
 ---
+
+## Basics: Data Frames
+
+```{r}
+print(mydata)
+mydata[3,2]
+```
+
+---
+
+## Basics: Factors
+
+```{r}
+# variable gender with 20 "male" entries and 30 "female" entries 
+gender <- c(rep("male",20), rep("female", 30)) 
+gender <- factor(gender) 
+# stores gender as 20 1s and 30 2s and associates
+# 1=female, 2=male internally (alphabetically)
+summary(gender)
+str(gender)
+```
+
+http://www.statmethods.net/input/datatypes.html
+
+---
+
+## 1. Getting data from a database or website
+
+```{r}
+fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl,destfile="./data/cameras.csv")
+list.files("./data")
+dateDownloaded <- date()
+dateDownloaded
+```
+
+https://github.com/rdpeng/courses/tree/master/03_GettingData
+
+---
+
+## 1. Getting data from a database or website
+
+```{r}
+cameraData <- read.table("./data/cameras.csv",sep=",",header=TRUE)
+head(cameraData)
+```
+
+---
+
+## 1. Getting data from a database or website
+
+Database connections  
+  
+[PostgreSQL - "RPostgreSQL"](https://cran.r-project.org/web/packages/RPostgreSQL/index.html)
+
+[Oracle - "ROracle"](https://cran.r-project.org/web/packages/ROracle/index.html)
+
+[MySQL - "RMySQL"](https://cran.r-project.org/web/packages/RMySQL/index.html)
+
+---
+
+## 1. Getting data from a database or website
+
+PostgreSQL example
+  
+```{r, eval=FALSE}
+drv <- dbDriver("PostgreSQL")                       # Load driver
+con <- dbConnect(drv, dbname="tempdb")              # Connect
+rs <- dbSendQuery(con,"select * from TableName")    # Run a query
+fetch(rs,n=-1)                                      # Return all elements
+dbDisconnect(con)                                   # Disconnect
+dbUnloadDriver(drv)                                 # Unload driver
+```
+
+https://code.google.com/p/rpostgresql/
+
+---
+
+## 2. Cleaning Data
+
+```{r}
+fileUrl <- "http://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl,destfile="./data/restaurants.csv")
+restData <- read.csv("./data/restaurants.csv")
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+
+---
+
+## 2. Cleaning Data
+
+Summarizing data
+
+```{r}
+str(restData)
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+
+---
+
+## 2. Cleaning Data
+
+Finding missing values
+
+```{r}
+sum(is.na(restData$councilDistrict))
+all(restData$zipCode > 0)
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+
+---
+
+## 2. Cleaning Data
+
+Finding specific values
+
+```{r}
+table(restData$zipCode %in% c("21212"))
+table(restData$zipCode %in% c("21212","21213"))
+```
+
+https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, eval=FALSE}
+install.packages("ggplot2")
+```
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+library(ggplot2)
+```
+
+http://docs.ggplot2.org/current/
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+str(mpg)
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE, fig.height=5, fig.width=12}
+qplot(displ, hwy, data = mpg)
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE, fig.height=5, fig.width=12}
+qplot(displ, hwy, data = mpg, color = drv)
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE, fig.height=5, fig.width=12}
+qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE, fig.height=5, fig.width=12}
+qplot(hwy, data = mpg, fill = drv)
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE, fig.height=5, fig.width=12}
+qplot(displ, hwy, data = mpg, facets = . ~ drv)
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 3. Making charts and graphs
+
+```{r, warning=FALSE, error=FALSE, message=FALSE, fig.height=5, fig.width=12}
+qplot(hwy, data = mpg, facets = drv ~ ., binwidth = 2)
+```
+
+https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+
+---
+
+## 4. Interacting with data
+
+`manipulate` function
+
+```{r, eval=FALSE}
+library(manipulate)
+manipulate(plot(1:x), x = slider(1, 100))
+```
+
+[Documentation](https://support.rstudio.com/hc/en-us/articles/200551906-Interactive-Plotting-with-Manipulate)
+
+---
+
+## 5. Creating presentations and reports
+
+* Presentations: You're looking at one
+* Reports
+
+http://rmarkdown.rstudio.com/
+
+---
+
+## Resources
+
+[Swirl](http://swirlstats.com/)
+
+[Coursera Data Science - Johns Hopkins](https://www.coursera.org/specialization/jhudatascience/1)
+
+[Course Material](https://github.com/rdpeng/courses)
+
+[Shiny Gallery](http://shiny.rstudio.com/gallery/)
+
+---
+
 
 ## Junk
 
 <img src="assets/img/Genscape_logo_grey.png" height=100> _Genscape_
 
 ![anything](assets/img/Genscape_logo_grey.png) _Genscape_
+
+---
+
+## Basics: If
+
+```{r}
+x <- 5
+
+if (x > 3) {
+    y <- 10
+} else {
+    y <- 0
+}
+print(y)
+```
+
+---
+
+## Basics: For
+
+```{r}
+for (i in 1:10) {
+    print(i)
+}
+```
 
 ---

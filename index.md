@@ -11,33 +11,13 @@ mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 ---
 
-## Introduction: Data Analysis
+## The Five Things
 
-"Solve this problem... Answer this question..."
-
-1. Load the data
-2. Clean it
-3. Graph it
-4. Change something
-5. Send it to 'production'
-
----
-
-## Problems
-
-* Acquisition, cleaning, reporting all need separate tools
-* Data and analysis live together in the same file
-* Updating data is hard
-* Describing what you did to someone else is nearly impossible
-
----
-
-## Why R?
-
-* It's free
-* It has a very nice development environment: Rstudio - www.rstudio.com
-* There is an active community of developers and support
-* There is a wide variety of packages, which are easy to install
+1. Getting data from a database or website
+2. Cleaning data
+3. Making charts and graphs
+4. Interacting with data
+5. Creating presentations and reports
 
 ---
 
@@ -45,15 +25,28 @@ knit        : slidify::knit2slides
 
 R - https://cran.r-project.org/
 
+<img src="assets/img/Rgui-MDI.png" height=450>
+
+[Image Source](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0CAcQjRxqFQoTCKuC7pugkMcCFYg2PgodIG8AVQ&url=%2Furl%3Fsa%3Di%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dimages%26cd%3D%26cad%3Drja%26uact%3D8%26ved%3D0CAcQjRxqFQoTCKuC7pugkMcCFYg2PgodIG8AVQ%26url%3Dhttp%253A%252F%252Fwww1.maths.lth.se%252Fhelp%252FR%252FRgui%252F%26ei%3DfR7BVevPEojt-AGg3oGoBQ%26psig%3DAFQjCNHcXMn3_Guho98-XhweTug0DSOM2Q%26ust%3D1438805945502363&ei=fR7BVevPEojt-AGg3oGoBQ&psig=AFQjCNHcXMn3_Guho98-XhweTug0DSOM2Q&ust=1438805945502363)
+
+---
+
+## Getting R
+
 RStudio - https://www.rstudio.com/products/rstudio/download/
+
+<img src="assets/img/rstudio-screenshot.png" height=450>
+
+[Image Source](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0CAcQjRxqFQoTCNqPto2ikMcCFYZzPgod2gwJxw&url=http%3A%2F%2Fpages.vassar.edu%2Facs%2Fr-for-data-analysis-and-graphics%2F&ei=dyDBVZr4Nobn-QHamaS4DA&psig=AFQjCNF15zfiNo6uv0LN55PdFt_5MLacDA&ust=1438806518209134)
 
 ---
 
 ## Basics
 
-* Use the <- operator to assign
-* Don't use ; at the end of lines
+* Use the `<-` operator to assign
+* You don't have to use `;` at the end of lines, unless combining commands
 * You don't have to declare a specific type
+* Object-oriented people: don't let the `.` trick you
 
 
 ```r
@@ -66,8 +59,7 @@ x
 ```
 
 ```r
-y <- c(2, "red", 4)
-y
+y <- c(2, "red", 4); print(y)
 ```
 
 ```
@@ -76,15 +68,27 @@ y
 
 ---
 
+## 1. Getting data from a database or website
+
+
+```r
+fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+download.file(fileUrl, destfile="./data/cameras.csv")
+```
+
+[Source: JHU-DS](https://github.com/rdpeng/courses/tree/master/03_GettingData)
+
+---
+
 ## Basics: Data Frames
 
 
 ```r
-d <- c(1,2,3,4)
+d <- c(1, 2, 3, 4)
 e <- c("red", "white", "red", NA)
-f <- c(TRUE,TRUE,TRUE,FALSE)
-mydata <- data.frame(d,e,f)
-names(mydata) <- c("ID","Color","Passed") # variable names
+f <- c(TRUE, TRUE, TRUE, FALSE)
+mydata <- data.frame(d, e, f)
+names(mydata) <- c("ID", "Color", "Passed") # variable names
 print(mydata)
 ```
 
@@ -96,7 +100,7 @@ print(mydata)
 ## 4  4  <NA>  FALSE
 ```
 
-http://www.statmethods.net/input/datatypes.html
+Source: http://www.statmethods.net/input/datatypes.html
 
 ---
 
@@ -116,68 +120,13 @@ print(mydata)
 ```
 
 ```r
-mydata[3,2]
+mydata[3, 2]
 ```
 
 ```
 ## [1] red
 ## Levels: red white
 ```
-
----
-
-## Basics: Factors
-
-
-```r
-# variable gender with 20 "male" entries and 30 "female" entries 
-gender <- c(rep("male",20), rep("female", 30)) 
-gender <- factor(gender) 
-# stores gender as 20 1s and 30 2s and associates
-# 1=female, 2=male internally (alphabetically)
-summary(gender)
-```
-
-```
-## female   male 
-##     30     20
-```
-
-```r
-str(gender)
-```
-
-```
-##  Factor w/ 2 levels "female","male": 2 2 2 2 2 2 2 2 2 2 ...
-```
-
-http://www.statmethods.net/input/datatypes.html
-
----
-
-## 1. Getting data from a database or website
-
-
-```r
-fileUrl <- "http://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
-download.file(fileUrl,destfile="./data/cameras.csv")
-list.files("./data")
-```
-
-```
-## [1] "cameras.csv"     "restaurants.csv"
-```
-
-```r
-dateDownloaded <- date()
-dateDownloaded
-```
-
-```
-## [1] "Wed Jul 22 08:40:53 2015"
-```
-
-https://github.com/rdpeng/courses/tree/master/03_GettingData
 
 ---
 
@@ -206,6 +155,8 @@ head(cameraData)
 ## 6         Erdman  & Macon St (39.3068045671, -76.5593167803)
 ```
 
+[Source: JHU-DS](https://github.com/rdpeng/courses/tree/master/03_GettingData)
+
 ---
 
 ## 1. Getting data from a database or website
@@ -228,30 +179,30 @@ PostgreSQL example
 ```r
 drv <- dbDriver("PostgreSQL")                       # Load driver
 con <- dbConnect(drv, dbname="tempdb")              # Connect
-rs <- dbSendQuery(con,"select * from TableName")    # Run a query
-fetch(rs,n=-1)                                      # Return all elements
+rs <- dbSendQuery(con, "select * from TableName")   # Run a query
+fetch(rs, n=-1)                                     # Return all elements
 dbDisconnect(con)                                   # Disconnect
 dbUnloadDriver(drv)                                 # Unload driver
 ```
 
-https://code.google.com/p/rpostgresql/
+Source: https://code.google.com/p/rpostgresql/
 
 ---
 
-## 2. Cleaning Data
+## 2. Cleaning data
 
 
 ```r
 fileUrl <- "http://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accessType=DOWNLOAD"
-download.file(fileUrl,destfile="./data/restaurants.csv")
+download.file(fileUrl, destfile="./data/restaurants.csv")
 restData <- read.csv("./data/restaurants.csv")
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
-## 2. Cleaning Data
+## 2. Cleaning data
 
 Summarizing data
 
@@ -270,13 +221,42 @@ str(restData)
 ##  $ Location.1     : Factor w/ 1210 levels "1 BIDDLE ST\nBaltimore, MD\n",..: 835 334 554 755 492 537 505 530 507 569 ...
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
-## 2. Cleaning Data
+## Basics: Factors
 
-Finding missing values
+
+```r
+# variable gender with 20 "male" entries and 30 "female" entries 
+gender <- c(rep("male",20), rep("female", 30)) 
+gender <- factor(gender) 
+# stores gender as 20 1s and 30 2s and associates
+# 1=female, 2=male internally (alphabetically)
+summary(gender)
+```
+
+```
+## female   male 
+##     30     20
+```
+
+```r
+str(gender)
+```
+
+```
+##  Factor w/ 2 levels "female","male": 2 2 2 2 2 2 2 2 2 2 ...
+```
+
+Source: http://www.statmethods.net/input/datatypes.html
+
+---
+
+## 2. Cleaning data
+
+Finding missing values with `is.na`
 
 
 ```r
@@ -295,11 +275,11 @@ all(restData$zipCode > 0)
 ## [1] FALSE
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
-## 2. Cleaning Data
+## 2. Cleaning data
 
 Finding specific values
 
@@ -324,11 +304,13 @@ table(restData$zipCode %in% c("21212","21213"))
 ##  1268    59
 ```
 
-https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/03_GettingData/03_02_summarizingData/index.Rmd)
 
 ---
 
 ## 3. Making charts and graphs
+
+Loading `ggplot2`
 
 
 ```r
@@ -340,11 +322,13 @@ install.packages("ggplot2")
 library(ggplot2)
 ```
 
-http://docs.ggplot2.org/current/
+See also: http://docs.ggplot2.org/current/
 
 ---
 
 ## 3. Making charts and graphs
+
+Example dataset `mpg`
 
 
 ```r
@@ -366,7 +350,7 @@ str(mpg)
 ##  $ class       : Factor w/ 7 levels "2seater","compact",..: 2 2 2 2 2 2 2 2 2 2 ...
 ```
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -379,7 +363,7 @@ qplot(displ, hwy, data = mpg)
 
 ![plot of chunk unnamed-chunk-15](assets/fig/unnamed-chunk-15-1.png) 
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -392,7 +376,7 @@ qplot(displ, hwy, data = mpg, color = drv)
 
 ![plot of chunk unnamed-chunk-16](assets/fig/unnamed-chunk-16-1.png) 
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -405,20 +389,7 @@ qplot(displ, hwy, data = mpg, geom = c("point", "smooth"))
 
 ![plot of chunk unnamed-chunk-17](assets/fig/unnamed-chunk-17-1.png) 
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
-
----
-
-## 3. Making charts and graphs
-
-
-```r
-qplot(hwy, data = mpg, fill = drv)
-```
-
-![plot of chunk unnamed-chunk-18](assets/fig/unnamed-chunk-18-1.png) 
-
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -429,9 +400,9 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(displ, hwy, data = mpg, facets = . ~ drv)
 ```
 
-![plot of chunk unnamed-chunk-19](assets/fig/unnamed-chunk-19-1.png) 
+![plot of chunk unnamed-chunk-18](assets/fig/unnamed-chunk-18-1.png) 
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -442,9 +413,9 @@ https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggp
 qplot(hwy, data = mpg, facets = drv ~ ., binwidth = 2)
 ```
 
-![plot of chunk unnamed-chunk-20](assets/fig/unnamed-chunk-20-1.png) 
+![plot of chunk unnamed-chunk-19](assets/fig/unnamed-chunk-19-1.png) 
 
-https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd
+[Source: JHU-DS](https://github.com/rdpeng/courses/blob/master/04_ExploratoryAnalysis/ggplot2/ggplot2_p1.Rmd)
 
 ---
 
@@ -460,14 +431,16 @@ manipulate(plot(1:x), x = slider(1, 100))
 
 [Documentation](https://support.rstudio.com/hc/en-us/articles/200551906-Interactive-Plotting-with-Manipulate)
 
+Another option: Deploy to [Shiny](http://shiny.rstudio.com/)
+
+
 ---
 
 ## 5. Creating presentations and reports
 
-* Presentations: You're looking at one
-* Reports
+* Presentations: You're looking at one (using [Slidify](http://slidify.org/))
 
-http://rmarkdown.rstudio.com/
+* Reports (using [RMarkdown](http://rmarkdown.rstudio.com/))
 
 ---
 
@@ -477,61 +450,10 @@ http://rmarkdown.rstudio.com/
 
 [Coursera Data Science - Johns Hopkins](https://www.coursera.org/specialization/jhudatascience/1)
 
-[Course Material](https://github.com/rdpeng/courses)
+[JHU-DS Course Material](https://github.com/rdpeng/courses)
 
 [Shiny Gallery](http://shiny.rstudio.com/gallery/)
 
----
+[Google's R Style Guide](https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml)
 
 
-## Junk
-
-<img src="assets/img/Genscape_logo_grey.png" height=100> _Genscape_
-
-![anything](assets/img/Genscape_logo_grey.png) _Genscape_
-
----
-
-## Basics: If
-
-
-```r
-x <- 5
-
-if (x > 3) {
-    y <- 10
-} else {
-    y <- 0
-}
-print(y)
-```
-
-```
-## [1] 10
-```
-
----
-
-## Basics: For
-
-
-```r
-for (i in 1:10) {
-    print(i)
-}
-```
-
-```
-## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10
-```
-
----

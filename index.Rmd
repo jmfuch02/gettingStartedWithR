@@ -302,6 +302,8 @@ Another option: Deploy to [Shiny](http://shiny.rstudio.com/)
 
 ## Resources
 
+[These Slides](https://github.com/jmfuch02/gettingStartedWithR)
+
 [Swirl](http://swirlstats.com/)
 
 [Coursera Data Science - Johns Hopkins](https://www.coursera.org/specialization/jhudatascience/1)
